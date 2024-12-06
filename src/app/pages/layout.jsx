@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
   }
 
   return (
-    <div className="admin-panel h-screen p-2 bg-gray-200">
+    <div className="admin-panel h-screen p-2 bg-gray-200 ">
       {/* Admin Panel Wrapper */}
       <div className="flex h-full gap-3">
         {/* Sidebar */}

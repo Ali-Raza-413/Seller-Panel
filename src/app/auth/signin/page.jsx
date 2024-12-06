@@ -40,9 +40,9 @@ function SignIn() {
       </div>
 
       {/* Right Section (Image) */}
-      <div className="flex-1 relative flex justify-end">
-        <div className="absolute left-20 max-w-[100%] h-full lg:max-h-[650px] mx-auto inset-0 overflow-hidden">
-          {/* Image with Padding */}
+      <div className="flex-1 relative flex justify-end h-screen">
+        <div className="absolute left-20 w-full h-full lg:max-h-full mx-auto inset-0 overflow-hidden">
+          {/* Image with Full Screen Height */}
           <img
             src="/img1.png"
             alt="Login Illustration"
