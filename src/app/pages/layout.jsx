@@ -40,7 +40,7 @@ const Layout = ({ children }) => {
         <div className="flex-1 bg-white rounded-lg p-5 shadow-md">
           <div className="flex flex-col h-full gap-5">
             {/* Navbar */}
-            <div className="bg-gray-100 p-4 rounded-lg shadow">
+            <div className="">
               <NavBar />
             </div>
 

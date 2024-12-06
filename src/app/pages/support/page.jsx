@@ -2,56 +2,65 @@
 import React, { useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { useRouter } from "next/navigation";
+import { FaEye, FaTrash, FaWhatsapp, FaEnvelope } from "react-icons/fa";
+import BackButton from "@/app/components/BackButton";
 import {
   getHeaderStyle,
   getBodyStyle,
 } from "@/app/components/Datatablstyle/DatatableStyle";
-import { useRouter } from "next/navigation";
-import BackButton from "@/app/components/BackButton";
-
 
 const HelpandSupport = () => {
-  // Static JSON data with descriptions
   const [data, setData] = useState([
     {
       id: 1,
-      title: "Login Issue",
+      subject: "Login Issue",
+      email: "user1@example.com",
       description: "Unable to login to account",
+      attachment: "file1.pdf",
       status: "Pending",
     },
     {
       id: 2,
-      title: "Payment Failed",
+      subject: "Payment Failed",
+      email: "user2@example.com",
       description: "Payment not processed",
+      attachment: "file2.pdf",
       status: "Resolved",
     },
     {
       id: 3,
-      title: "Account Hacked",
+      subject: "Account Hacked",
+      email: "user3@example.com",
       description: "Suspicious activity detected",
+      attachment: "file3.pdf",
       status: "Pending",
     },
     {
       id: 4,
-      title: "Error 404 on Help Page",
+      subject: "Error 404 on Help Page",
+      email: "user4@example.com",
       description: "Help page not found",
+      attachment: "file4.pdf",
       status: "Resolved",
     },
     {
       id: 5,
-      title: "Cannot Reset Password",
+      subject: "Cannot Reset Password",
+      email: "user5@example.com",
       description: "Password reset link not working",
+      attachment: "file5.pdf",
       status: "Pending",
     },
   ]);
+  const [selectedRows, setSelectedRows] = useState([]);
   const router = useRouter();
-  // Function to delete a row by ID
+
   const handleDelete = (rowId) => {
     const updatedData = data.filter((item) => item.id !== rowId);
     setData(updatedData);
   };
 
-  // Custom styling for the Status column
   const statusBodyTemplate = (rowData) => {
     const statusStyles = {
       Pending: "text-yellow-500",
@@ -63,67 +72,129 @@ const HelpandSupport = () => {
     );
   };
 
-  // Delete button for the Action column
-  const actionBodyTemplate = (rowData) => {
-  return (
+  const attachmentBodyTemplate = (rowData) => (
     <button
-      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+      className="text-blue-500 hover:text-blue-700"
+      onClick={() => alert(`Opening file: ${rowData.attachment}`)}
+      title="View Attachment"
+    >
+      <FaEye />
+    </button>
+  );
+
+  const chatBodyTemplate = () => (
+    <div className="flex gap-2">
+      <FaWhatsapp className="text-green-500 cursor-pointer" title="WhatsApp" />
+      <FaEnvelope className="text-blue-500 cursor-pointer" title="Gmail" />
+    </div>
+  );
+
+  const actionBodyTemplate = (rowData) => (
+    <button
+      className="text-red-500 hover:text-red-700"
       onClick={() => handleDelete(rowData.id)}
       title="Delete"
     >
-      Delete
+      <FaTrash />
     </button>
   );
-};  
+
+  const onSelectAll = (e) => {
+    setSelectedRows(e.checked ? [...data] : []);
+  };
+
+  const customCheckbox = (options) => (
+    <input
+      type="checkbox"
+      className="w-5 h-5 bg-black border-none rounded-sm text-white focus:ring-0 focus:ring-offset-0"
+      checked={options.checked}
+      onChange={(e) => options.onChange(e.checked)}
+    />
+  );
 
   return (
     <div className="p-4">
-    <div className="flex justify-between">
-    <div className="flex items-center gap-2 mb-6">
-        <BackButton/>
-        <h2 className="text-xl font-bold text-left">Help and Support</h2>
+      <div className="flex justify-between">
+        <div className="flex items-center gap-2 mb-6">
+          <BackButton />
+          <h2 className="text-xl font-bold text-left">Help and Support</h2>
         </div>
         <div>
-    <button className="bg-gray-600 text-white 2 rounded-lg px-4 py-2" onClick={()=>router.push("/pages/support/addticket")}>Add Ticket</button>
-    </div>
-    </div>
+          <button
+            className="bg-gray-600 text-white rounded-lg px-4 py-2"
+            onClick={() => router.push("/pages/support/addticket")}
+          >
+            Add Ticket
+          </button>
+        </div>
+      </div>
       <DataTable
         value={data}
         paginator
         rows={5}
-        className="p-datatable-gridlines shadow-lg"
+        className="shadow-lg"
         responsiveLayout="scroll"
+        selection={selectedRows}
+        onSelectionChange={(e) => setSelectedRows(e.value)}
+        dataKey="id"
       >
+        <Column
+          selectionMode="multiple"
+         
+          bodyStyle={getBodyStyle()}
+          headerStyle={getHeaderStyle()}
+        />
         <Column
           field="id"
           header="ID"
-          headerStyle={getHeaderStyle()}
           bodyStyle={getBodyStyle()}
+          headerStyle={getHeaderStyle()}
         ></Column>
         <Column
-          field="title"
-          header="Title"
-          headerStyle={getHeaderStyle()}
+          field="subject"
+          header="Subject"
           bodyStyle={getBodyStyle()}
+          headerStyle={getHeaderStyle()}
+        ></Column>
+        <Column
+          field="email"
+          header="Email"
+          bodyStyle={getBodyStyle()}
+          headerStyle={getHeaderStyle()}
         ></Column>
         <Column
           field="description"
           header="Description"
-          headerStyle={getHeaderStyle()}
           bodyStyle={getBodyStyle()}
+          headerStyle={getHeaderStyle()}
+        ></Column>
+        <Column
+          field="attachment"
+          header="Attachment"
+          body={attachmentBodyTemplate}
+          bodyStyle={getBodyStyle()}
+          headerStyle={getHeaderStyle()}
+        ></Column>
+        <Column
+          field="chat"
+          header="Chat"
+          body={chatBodyTemplate}
+          bodyStyle={getBodyStyle()}
+          headerStyle={getHeaderStyle()}
         ></Column>
         <Column
           field="status"
           header="Status"
           body={statusBodyTemplate}
-          headerStyle={getHeaderStyle()}
           bodyStyle={getBodyStyle()}
+          headerStyle={getHeaderStyle()}
         ></Column>
         <Column
+          field="action"
           header="Action"
           body={actionBodyTemplate}
-          headerStyle={getHeaderStyle()}
           bodyStyle={getBodyStyle()}
+          headerStyle={getHeaderStyle()}
         ></Column>
       </DataTable>
     </div>

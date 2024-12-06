@@ -11,8 +11,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["'Noto Sans'", ...fontFamily.sans],
-        jakarta: ["'Plus Jakarta Sans'", ...fontFamily.sans],
+        sans: ['var(--font-inter)', 'sans-serif'], // Use the CSS variable
       },
     },
   },
@@ -32,8 +31,7 @@ module.exports = {
         foreground: "var(--foreground)",
       },
       fontFamily: {
-        sans: ["'Noto Sans'", ...fontFamily.sans],
-        jakarta: ["'Plus Jakarta Sans'", ...fontFamily.sans],
+        sans: ['var(--font-inter)', 'sans-serif'], // Use the CSS variable
       },
     },
   },

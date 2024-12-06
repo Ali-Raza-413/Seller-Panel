@@ -1,86 +1,75 @@
-"use-client";
-import React from "react";
-import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
-
-// Registering chart.js components
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+"use client";
+import React, { useState } from "react";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const StatisticCard = () => {
-  // Data for the line chart
-  const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], // X-axis labels
-    datasets: [
-      {
-        label: 'Resolved Issues', // Label for the dataset
-        data: [50, 100, 120, 150, 200, 250, 300], // Y-axis data points (example data)
-        fill: false, // No fill under the line
-        borderColor: 'black', // Line color (black)
-        tension: 0.1, // Smooth curve
-        borderWidth: 2, // Line width
-      },
-    ],
-  };
+  // Dummy data for the area chart
+  const chartData = [
+    { month: "Jan", interactions: 50 },
+    { month: "Feb", interactions: 100 },
+    { month: "Mar", interactions: 120 },
+    { month: "Apr", interactions: 150 },
+    { month: "May", interactions: 200 },
+    { month: "Jun", interactions: 250 },
+    { month: "Jul", interactions: 300 },
+  ];
 
-  // Options for the chart
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-          color: 'black', // Legend text color
-        },
-      },
-      tooltip: {
-        callbacks: {
-          label: function (context) {
-            return `Issues: ${context.raw}`;
-          },
-        },
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          color: 'rgba(0, 0, 0, 0.1)', // Light grid lines on the x-axis (black)
-        },
-        ticks: {
-          color: 'black', // X-axis labels color (black)
-        },
-      },
-      y: {
-        grid: {
-          color: 'rgba(0, 0, 0, 0.1)', // Light grid lines on the y-axis (black)
-        },
-        ticks: {
-          color: 'black', // Y-axis labels color (black)
-        },
-      },
-    },
-    elements: {
-      point: {
-        radius: 5, // Points on the line
-        backgroundColor: 'black', // Point color (black)
-      },
-    },
-    layout: {
-      padding: 20, // Padding around the chart
-    },
+  const [filter, setFilter] = useState("Monthly"); // Filter state
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md  mt-8">
-      <h2 className="font-semibold text-black mb-4 text-center font-sans text-2xl">Customer Interactions</h2>
-      <div className="text-blue-600 mb-4 text-center font-sans font-bold">
-        <p>Messages Received: 250</p>
-        <p>Average Response Time: 2 hrs</p>
-        <p>Resolved Issues: 120</p>
+    <div className="bg-white  rounded-lg shadow-md mt-8 p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="font-semibold text-black text-2xl">Total Interactions</h2>
+
+        {/* Filter Dropdown */}
+        <select
+          value={filter}
+          onChange={handleFilterChange}
+          className="border border-gray-300 rounded-md p-2 bg-white shadow-sm text-gray-700"
+        >
+          <option value="Monthly">Monthly</option>
+          <option value="Weekly">Weekly</option>
+          <option value="Daily">Daily</option>
+        </select>
       </div>
 
-      {/* Line Chart */}
-      <div className="bg-white p-4 rounded-lg">
-        <Line data={data} options={options} />
+      {/* Area Chart */}
+      <div className="bg-white  rounded-lg">
+        <ResponsiveContainer width="100%" height={300}>
+          <AreaChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" tick={{ fill: "black" }} />
+            <YAxis tick={{ fill: "black" }} />
+            <Tooltip />
+            {/* Gradient background and line */}
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#f0f4f8" stopOpacity={1} />
+                <stop offset="100%" stopColor="transparent" stopOpacity={1} />
+              </linearGradient>
+            </defs>
+            <Area
+              type="monotone"
+              dataKey="interactions"
+              stroke="black"
+              fill="url(#gradient)"
+              strokeWidth={2}
+              dot={{ fill: "white", r: 5 }}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );

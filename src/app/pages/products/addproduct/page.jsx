@@ -1,121 +1,388 @@
 "use client";
-
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useRef } from "react";
 import BackButton from "@/app/components/BackButton";
+import Image from "next/image";
 
-const AddProduct = () => {
+const ProductForm = () => {
   const [formData, setFormData] = useState({
-    title: "",
-    image: "",
-    date: "",
+    name: "",
+    category: "",
+    brand: "",
+    gender: "",
+    colors: [], // Array to store selected colors
+    size: "", // Store selected size
+    description: "",
+    summary: "",
+    priceRange: "",
+    image: null,
   });
 
-  const [error, setError] = useState("");
-  const router = useRouter();
+  const [price, setPrice] = useState("$5000");
+  const [imagePreview, setImagePreview] = useState(null);
+  const fileInputRef = useRef(null);
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedSize, setSelectedSize] = useState("");
 
+  const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
+
+  const handleSizeChange = (size) => {
+    setSelectedSize(size);
+  };
+  const colors = [
+    "#313B5E",
+    "#F9B931",
+    "#FFFFFF",
+    "#FF6C2F",
+    "#22C55E",
+    "#EF5F5F",
+    "#4ECAC2",
+    "#5D7186",
+  ];
+  // Handle the change in the range slider
+  const handleRangeChange = (event) => {
+    setPrice(event.target.value);
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleColorChange = (e) => {
+    const { value, checked } = e.target;
+    setSelectedColors((prevState) =>
+      checked
+        ? [...prevState, value]
+        : prevState.filter((color) => color !== value)
+    );
+  };
+
+  const handleFileSelected = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setLoading(true);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result); // Set image preview
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Handle icon click to open file input
+  const handleIconClick = () => {
+    fileInputRef.current.click();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Validate required fields
-    if (!formData.title || !formData.image || !formData.date) {
-      setError("All fields are required.");
-      return;
-    }
-
-    setError("");
-
-    // Simulate API call
-    console.log("Product Added:", formData);
-
-    // Redirect to another page after submission
-    router.push("/pages/products");
+    console.log("Form submitted with data:", formData);
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
-        <div className="flex items-center gap-2 mb-6">
-        <BackButton/>
-        <h1 className="text-2xl font-bold ">Add New Product</h1>
+    <>
+      <div className="">
+        <div className="flex items-center gap-2 mb-6 gap-5">
+          <BackButton />
+          <h1 className="text-2xl font-bold ">Add New Product</h1>
         </div>
-        {error && (
-          <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">
-            {error}
-          </div>
-        )}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Title Field */}
-          <div>
-            <label htmlFor="title" className="block font-semibold mb-1">
-              Title <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-lg"
-              placeholder="Enter product title"
-            />
-          </div>
-
-          {/* Image Field */}
-          <div>
-            <label htmlFor="image" className="block font-semibold mb-1">
-              Image URL <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="image"
-              name="image"
-              value={formData.image}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-lg"
-              placeholder="Enter image URL"
-            />
-          </div>
-
-          {/* Date Field */}
-          <div>
-            <label htmlFor="date" className="block font-semibold mb-1">
-              Date Created <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-lg"
-            />
-          </div>
-
-          <div className="flex justify-end space-x-4">
-            <button
-              type="button"
-              onClick={() => router.push("/pages/products")}
-              className="px-4 py-2 bg-gray-500 text-white rounded-lg"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-            >
-              Add Product
-            </button>
-          </div>
-        </form>
       </div>
-    </div>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        {/* Form Section */}
+        <div className="md:col-span-8">
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 md:grid-cols-9 gap-6"
+          >
+            {/* Name and Category */}
+            <div className="md:col-span-3">
+              <label htmlFor="name" className="block font-semibold mb-1">
+                Product Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg bg-[#F4F4F5]"
+                placeholder="Enter product name"
+              />
+            </div>
+            <div className="md:col-span-3">
+              <label htmlFor="category" className="block font-semibold mb-1">
+                Product Category <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="category"
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg bg-[#F4F4F5]"
+                placeholder="Enter product category"
+              />
+            </div>
+            <div className="md:col-span-3">
+              <label htmlFor="category" className="block font-semibold mb-1">
+                Product Subcategory <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="subcategory"
+                name="subcategory"
+                value={formData.subcategory}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg bg-[#F4F4F5]"
+                placeholder="Enter product subcategory"
+              />
+            </div>
+            <div className="md:col-span-4">
+              <label htmlFor="name" className="block font-semibold mb-1">
+                Brand <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg bg-[#F4F4F5]"
+                placeholder="Enter product name"
+              />
+            </div>
+            <div className="md:col-span-5">
+              <label htmlFor="name" className="block font-semibold mb-1">
+                Gender <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg bg-[#F4F4F5]"
+                placeholder="Enter product name"
+              />
+            </div>
+            <div className="md:col-span-8">
+              <label htmlFor="name" className="block font-semibold mb-1">
+                Website Link <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="w-[48%] px-4 py-2 border rounded-lg bg-[#F4F4F5]"
+                placeholder="Enter product name"
+              />
+            </div>
+            <div className="md:col-span-5">
+              <h1 className="text-md font-bold">
+                Colors <span className="text-red-500">*</span>
+              </h1>
+              <div className="flex flex-wrap gap-2">
+                {colors.map((color) => (
+                  <div
+                    key={color}
+                    className="flex flex-col items-center space-x-2"
+                  >
+                    <input
+                      type="checkbox"
+                      id={color}
+                      value={color}
+                      checked={selectedColors.includes(color)}
+                      onChange={handleColorChange}
+                      className="hidden"
+                    />
+                    <label htmlFor={color} className="cursor-pointer">
+                      <div className="flex justify-center items-center h-10 w-10 bg-blue-100 rounded-lg">
+                        <div
+                          className="h-6 w-6 rounded-full"
+                          style={{
+                            backgroundColor: color,
+                            backdropFilter: "blur(4px)",
+                          }}
+                        ></div>
+                      </div>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="md:col-span-4">
+              <label htmlFor="size" className="block font-semibold mb-1">
+                Size <span className="text-red-500">*</span>
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {sizes.map((size) => (
+                  <div
+                    key={size}
+                    className={`cursor-pointer flex justify-center items-center h-10 w-10 border rounded-lg ${
+                      selectedSize === size
+                        ? "border-blue-500 bg-blue-100"
+                        : "border-gray-300"
+                    }`}
+                    onClick={() => handleSizeChange(size)}
+                  >
+                    <span
+                      className={`text-sm font-semibold ${
+                        selectedSize === size
+                          ? "text-blue-500"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {size.charAt(0).toUpperCase() + size.slice(1)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Description */}
+            <div className="md:col-span-8">
+              <label htmlFor="description" className="block font-semibold mb-1">
+                Description <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg bg-[#F4F4F5]"
+                rows="4"
+                placeholder="Enter product description"
+              ></textarea>
+            </div>
+            <div className="md:col-span-8">
+              <h1 className="text-md font-semibold text-black">
+                Pricing Details
+              </h1>
+            </div>
+            <div className="md:col-span-3">
+              <label
+                htmlFor="default-range"
+                className="block mb-2 text-md font-semibold text-black "
+              >
+                Price
+              </label>
+              <div className="flex justify-between text-md font-medium  text-black ">
+                <span>$1000</span>
+                <span>{price}</span>
+              </div>
+              <input
+                id="default-range"
+                type="range"
+                value={price}
+                min="$1000"
+                max="$5000"
+                step="$100"
+                onChange={handleRangeChange}
+                className="w-full h-2 bg-black rounded-lg appearance-none cursor-pointer "
+              />
+            </div>
+            <div className="md:col-span-5">
+              <label
+                htmlFor="discount-input"
+                className="block mb-2 text-sm font-bold text-black"
+              >
+                Discount
+              </label>
+              <input
+                id="discount-input"
+                type="number"
+                className="w-full h-10 mt-3 px-4 border border-gray-300 rounded-lg appearance-none bg-[#F4F4F5]"
+              />
+            </div>
+            {/* Image Upload */}
+            <div className="md:col-span-8">
+              <h1 className="text-lg font-bold">Add Product Photo</h1>
+            </div>
+            <div className="md:col-span-8 border-2 border-dotted border-gray-300 rounded-lg h-[200px]">
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelected}
+                  ref={fileInputRef}
+                  className="hidden"
+                />
+              </div>
+              <div className="flex flex-col justify-center items-center py-10">
+                <Image
+                  src="/b6.png"
+                  alt="filesicon"
+                  onClick={handleIconClick}
+                  width={40}
+                  height={40}
+                  className="cursor-pointer"
+                />
+                <p className="text-[16px] text-[#AB9E7D] text-center mt-8">
+                  <span className="font-bold text-black">
+                    Drop your images here{" "}
+                  </span>
+                  , or click to browse
+                </p>
+                <p className="text-[16px] text-[#AB9E7D] text-center">
+                  1600 x 1200 (4:3) recommended. PNG, JPG and GIF files are
+                  allowed
+                </p>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="md:col-span-8 flex  gap-4 justify-end">
+              <button
+                type="submit"
+                className="px-6 py-2 bg-white border border-black text-black shadow-md rounded-lg"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-6 py-2  bg-black text-white rounded-lg shadow-md"
+              >
+                Add Product
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Preview Section */}
+        <div className="md:col-span-3 md:col-start-9 flex flex-col space-y-4 ">
+          <h2 className="text-lg font-bold mb-4">Preview</h2>
+          {imagePreview && (
+            <Image
+              src={imagePreview}
+              alt={"quotpreview"}
+              width={500}
+              height={288}
+              className="w-full h-72 object-cover rounded-lg"
+            />
+          )}
+          <p>
+            <strong>Name:</strong> {formData.name}
+          </p>
+          <p>
+            <strong>Category:</strong> {formData.category}
+          </p>
+          <p>
+            <strong>Size:</strong> {formData.size}
+          </p>
+          <p>
+            <strong>Shoe Colors:</strong> {formData.colors.join(", ")}
+          </p>
+          <p>
+            <strong>Description:</strong> {formData.description}
+          </p>
+        </div>
+      </div>
+    </>
   );
 };
 
-export default AddProduct;
+export default ProductForm;

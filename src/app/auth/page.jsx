@@ -1,154 +1,90 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function AuthPage() {
-  const [isRegister, setIsRegister] = useState(false); // Track whether to show Login or Register
-  const router = useRouter(); // Router hook for navigation
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const router = useRouter();
 
-  const handleLoginSubmit = (e) => {
-    e.preventDefault(); // Prevent page refresh
-    // Here you would generally handle login logic (e.g., call API)
-    // For now, we simulate a successful login and redirect
-    router.push("/pages/dashboard"); // Redirect to dashboard after login
+  const handleClick = (e) => {
+    e.preventDefault();
+    router.push("/pages/dashboard");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md ">
-        <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">
-          {isRegister ? "Register" : "Login"}
-        </h1>
+    <div className="flex min-h-screen bg-black">
+      {/* Left Section (Form) */}
+      <div className="flex-1 flex items-center justify-center px-4 py-8">
+        <div className="space-y-8 bg-white p-8 rounded-xl shadow-lg w-[60%]">
+          <h1 className="text-lg text-center font-bold">Login</h1>
 
-        {/* Toggle Buttons */}
-        <div className="flex justify-center gap-4 mb-6">
+          <form onSubmit={handleClick}>
+            <div className="flex flex-col space-y-4">
+              {/* Email Input */}
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                required
+              />
+              {/* Password Input */}
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                required
+              />
+
+              <button
+                type="submit"
+                className="w-full bg-black text-white text-[17px] font-normal px-6 py-3 rounded-md font-inter"
+              >
+                Login
+              </button>
+              
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="h-4 w-4"
+                  />
+                  <label className="text-sm text-gray-700">Remember me</label>
+                </div>
+                </div>
+
+             
+          </form>
           <button
-            onClick={() => setIsRegister(false)}
-            className={`px-4 py-2 rounded ${
-              !isRegister
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-600"
-            }`}
-          >
-            Login
-          </button>
-          <button
-            onClick={() => setIsRegister(true)}
-            className={`px-4 py-2 rounded ${
-              isRegister
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-600"
-            }`}
-          >
-            Register
-          </button>
+                type="submit"
+                className="w-full bg-[#F4F4F5] text-black text-[17px] font-normal px-6 py-3 rounded-md font-inter"
+                onClick={() => router.push("/auth/signin")}
+              >
+                Continue with phone
+              </button>
         </div>
+      </div>
 
-        {/* Conditional Form Rendering */}
-        {isRegister ? (
-          <RegisterForm />
-        ) : (
-          <LoginForm onLogin={handleLoginSubmit} />
-        )}
+      {/* Right Section (Image) */}
+      <div className="flex-1 relative flex justify-end">
+        <div className="absolute left-20 max-w-[100%] max-h-[650px] mx-auto inset-0 overflow-hidden">
+          {/* Image with Padding */}
+          <img
+            src="/img1.png"
+            alt="Login Illustration"
+            className="w-full h-full object-cover"
+          />
+        </div>
       </div>
     </div>
   );
 }
 
-// Login Form Component
-function LoginForm({ onLogin }) {
-  return (
-    <form onSubmit={onLogin}>
-      <div className="mb-4">
-        <label
-          htmlFor="email"
-          className="block text-gray-700 font-bold font-sans"
-        >
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter your email"
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="password"
-          className="block text-gray-700 font-bold font-sans"
-        >
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Enter your password"
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-sans"
-      >
-        Login
-      </button>
-    </form>
-  );
-}
-
-// Register Form Component
-function RegisterForm() {
-  return (
-    <form>
-      <div className="mb-4">
-        <label
-          htmlFor="name"
-          className="block text-gray-700 font-bold font-sans"
-        >
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          placeholder="Enter your name"
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="email"
-          className="block text-gray-700 font-bold font-sans"
-        >
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter your email"
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="password"
-          className="block text-gray-700 font-bold font-sans"
-        >
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Create a password"
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition font-sans"
-      >
-        Register
-      </button>
-    </form>
-  );
-}
+export default Login;
