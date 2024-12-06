@@ -182,15 +182,10 @@ const [modalMode, setModalMode] = useState("view");
           <BackButton />
           <h1 className="text-2xl font-semibold">Product Management</h1>
         </div>
-        <button
-          className="bg-gray-600 text-white px-6 py-2 rounded-lg"
-          onClick={() => router.push("/pages/products/addproduct")}
-        >
-          Add Product
-        </button>
-      </div>
-      <div className="flex items-center gap-4">
        
+      </div>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex gap-2">
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
@@ -210,6 +205,13 @@ const [modalMode, setModalMode] = useState("view");
           className="w-[50%] max-w-sm px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300"
         />
       </div>
+      <button
+          className="bg-gray-600 text-white px-6 py-2 rounded-lg"
+          onClick={() => router.push("/pages/products/addproduct")}
+        >
+          Add Product
+        </button>
+        </div>
       <div className="bg-white rounded-lg shadow-md overflow-auto">
         <DataTable
           value={filteredProducts}

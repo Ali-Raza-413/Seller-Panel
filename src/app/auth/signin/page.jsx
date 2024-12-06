@@ -22,7 +22,7 @@ function SignIn() {
           <form onSubmit={handleClick}>
             <div className="flex flex-col space-y-20">
               <PhoneInput
-                defaultCountry="RU"
+                defaultCountry="SA"
                 value={phone}
                 onChange={setPhone}
                 className="custom-phone-input"
@@ -38,10 +38,9 @@ function SignIn() {
           </form>
         </div>
       </div>
-
       {/* Right Section (Image) */}
       <div className="flex-1 relative flex justify-end h-screen">
-        <div className="absolute left-20 w-full h-full lg:max-h-full mx-auto inset-0 overflow-hidden">
+        <div className="absolute left-20 maxw-[100%] h-full lg:max-h-full mx-auto inset-0 overflow-hidden">
           {/* Image with Full Screen Height */}
           <img
             src="/img1.png"

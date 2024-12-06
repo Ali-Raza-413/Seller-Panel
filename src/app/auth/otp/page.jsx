@@ -13,10 +13,30 @@ function OtpVerification() {
       setOtp(newOtp);
 
       // Automatically focus on the next input
-      if (value && index < 3) {
+      if (value && index < otp.length - 1) {
         const nextInput = document.getElementById(`otp-input-${index + 1}`);
         if (nextInput) nextInput.focus();
       }
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    const newOtp = [...otp];
+
+    // Handle backspace
+    if (e.key === "Backspace") {
+      if (otp[index] === "") {
+        // Move to the previous input if current input is empty
+        if (index > 0) {
+          const prevInput = document.getElementById(`otp-input-${index - 1}`);
+          if (prevInput) prevInput.focus();
+          newOtp[index - 1] = ""; // Clear the previous input
+        }
+      } else {
+        // Clear current input
+        newOtp[index] = "";
+      }
+      setOtp(newOtp);
     }
   };
 
@@ -44,6 +64,7 @@ function OtpVerification() {
                     type="text"
                     value={value}
                     onChange={(e) => handleChange(e.target.value, index)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
                     maxLength="1"
                     className="w-12 h-12 text-center text-xl border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
@@ -55,7 +76,7 @@ function OtpVerification() {
                 className="w-full bg-black text-white text-[17px] font-normal px-6 py-3 rounded-md font-inter"
               >
                 Verify OTP
-              </button>             
+              </button>
             </div>
           </form>
         </div>

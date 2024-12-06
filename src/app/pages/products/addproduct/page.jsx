@@ -15,6 +15,10 @@ const ProductForm = () => {
     summary: "",
     priceRange: "",
     image: null,
+    brand: "",
+    gender: "",
+    link: ""
+
   });
 
   const [price, setPrice] = useState("$5000");
@@ -85,7 +89,7 @@ const ProductForm = () => {
   return (
     <>
       <div className="">
-        <div className="flex items-center gap-2 mb-6 gap-5">
+        <div className="flex items-center gap-2 mb-6 ">
           <BackButton />
           <h1 className="text-2xl font-bold ">Add New Product</h1>
         </div>
@@ -146,9 +150,9 @@ const ProductForm = () => {
               </label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={formData.name}
+                id="brand"
+                name="brand"
+                value={formData.brand}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-lg bg-[#F4F4F5]"
                 placeholder="Enter product name"
@@ -160,9 +164,9 @@ const ProductForm = () => {
               </label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={formData.name}
+                id="gender"
+                name="gender"
+                value={formData.gender}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-lg bg-[#F4F4F5]"
                 placeholder="Enter product name"
@@ -174,9 +178,9 @@ const ProductForm = () => {
               </label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={formData.name}
+                id="link"
+                name="link"
+                value={formData.link}
                 onChange={handleInputChange}
                 className="w-[48%] px-4 py-2 border rounded-lg bg-[#F4F4F5]"
                 placeholder="Enter product name"
