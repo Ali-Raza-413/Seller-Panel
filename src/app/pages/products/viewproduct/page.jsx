@@ -80,9 +80,9 @@ const ViewProductDetail = () => {
           {isDescriptionExpanded ? (
             <>
               This product is designed to provide comfort and durability. The slim fit enhances the stylish design, making it a versatile piece for various occasions. 
-              It's easy to care for, and the recycled fabric is environmentally friendly, ensuring a sustainable choice for your wardrobe. 
+              It&apos;s easy to care for, and the recycled fabric is environmentally friendly, ensuring a sustainable choice for your wardrobe. 
               <br /> <br />
-              This item is part of our latest collection. Don't miss out on this trendy yet comfortable piece.
+              This item is part of our latest collection. Don&apos;t miss out on this trendy yet comfortable piece.
             </>
           ) : (
             <span> Fabric: Body: 100% recycled polyester. Lining: 79% polyester....</span>
