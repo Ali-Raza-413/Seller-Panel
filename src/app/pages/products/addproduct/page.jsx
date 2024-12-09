@@ -94,7 +94,7 @@ const ProductForm = () => {
       <div className="mb-4">
         <div className="flex items-center gap-2 mb-6 ">
           <BackButton />
-          <h1 className="text-2xl font-bold ">Add New Product</h1>
+          <h1 className="text-2xl font-bold text-black ">Add New Product</h1>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">

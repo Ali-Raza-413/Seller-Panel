@@ -194,7 +194,7 @@ const ProductManagement = () => {
       <div className="flex justify-between items-center">
         <div className="flex gap-2 items-center">
           <BackButton />
-          <h1 className="text-2xl font-semibold">Product Management</h1>
+          <h1 className="text-2xl font-semibold text-black">Product Management</h1>
         </div>
       </div>
       <div className="flex items-center justify-between gap-4">
@@ -216,7 +216,7 @@ const ProductManagement = () => {
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-[50%] max-w-sm px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300"
+            className="w-[50%]  max-w-sm px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300"
           />
           <input
             type="text"
