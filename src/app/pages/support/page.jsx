@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useRouter } from "next/navigation";
-import { FaEye, FaTrash, FaWhatsapp, FaEnvelope } from "react-icons/fa";
+import { FaEye, FaTrash } from "react-icons/fa";
 import BackButton from "@/app/components/BackButton";
 import {
   getHeaderStyle,
@@ -74,18 +74,18 @@ const HelpandSupport = () => {
 
   const attachmentBodyTemplate = (rowData) => (
     <button
-      className="text-blue-500 hover:text-blue-700"
+      className="text-black "
       onClick={() => alert(`Opening file: ${rowData.attachment}`)}
       title="View Attachment"
     >
-      <FaEye />
+      <FaEye className="w-5 h-5" />
     </button>
   );
 
   const chatBodyTemplate = () => (
     <div className="flex gap-2">
-      <FaWhatsapp className="text-green-500 cursor-pointer" title="WhatsApp" />
-      <FaEnvelope className="text-blue-500 cursor-pointer" title="Gmail" />
+      <img src="/wh.png" className="w-10 h-10" alt="whatsapp" />
+      <img src="/gmail.png" className="w-10 h-10" alt="gmail" />
     </div>
   );
 
@@ -132,15 +132,13 @@ const HelpandSupport = () => {
         value={data}
         paginator
         rows={5}
-        className="shadow-lg"
-        responsiveLayout="scroll"
         selection={selectedRows}
         onSelectionChange={(e) => setSelectedRows(e.value)}
         dataKey="id"
+        className="custom-paginator"
       >
         <Column
           selectionMode="multiple"
-         
           bodyStyle={getBodyStyle()}
           headerStyle={getHeaderStyle()}
         />

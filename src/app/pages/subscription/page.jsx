@@ -1,3 +1,5 @@
+import React from "react";
+import BackButton from "@/app/components/BackButton";
 const plans = [
   {
     title: "Basic",
@@ -75,54 +77,63 @@ const plans = [
 
 export default function SubscriptionPlans() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-3 gap-6">
-      {plans.map((plan, index) => (
-        <div
-          key={index}
-          className={`p-6 rounded-lg shadow-md ${
-            index === 1 ? "bg-black text-white border border-white" : "bg-white border border-black"
-          }`}
-        >
-          {/* Image */}
-          <img
-            src={plan.image}
-            alt={`${plan.title} Image`}
-            className="w-10 h-10 object-cover rounded-md mb-4"
-          />
-
-          {/* Title */}
-          <h3 className="text-lg font-semibold">{plan.title}</h3>
-          <p className="text-sm">{plan.users}</p>
-
-          {/* Price */}
-          <p className="text-xl font-semibold mt-3">{plan.price}</p>
-          <p className="text-sm">{plan.detail}</p>
-          <button
-            className={`px-4 py-2 rounded-lg font-semibold mt-3 w-full text-center ${
-              index === 1 ? "bg-white text-black" : "bg-black text-white"
+    <>
+      <div className="p-4">
+        <div className="flex items-center gap-2 mb-6 ">
+          <BackButton />
+          <h1 className="text-2xl font-bold ">Add New Product</h1>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-3 gap-6">
+        {plans.map((plan, index) => (
+          <div
+            key={index}
+            className={`p-6 rounded-lg shadow-md ${
+              index === 1
+                ? "bg-black text-white border border-white"
+                : "bg-white border border-black"
             }`}
           >
-            UPGRADE NOW{" "}
-          </button>
-          {/* Features */}
-          <ul className="mb-6 space-y-2 mt-6 text-sm text-[#555964] ">
-            {plan.features.map((feature, featureIndex) => (
-              <li
-                key={featureIndex}
-                className={`flex items-center gap-2 ${
-                  index === 1 ? "text-white" : "text-black"
-                }`}
-              >
-                <img src={plan.icon} className="w-6 h-6" />
-                {feature}
-              </li>
-            ))}
-          </ul>
+            {/* Image */}
+            <img
+              src={plan.image}
+              alt={`${plan.title} Image`}
+              className="w-10 h-10 object-cover rounded-md mb-4"
+            />
 
-          {/* Button */}
+            {/* Title */}
+            <h3 className="text-lg font-semibold">{plan.title}</h3>
+            <p className="text-sm">{plan.users}</p>
 
-          {/* Right-aligned Image for the Second Card */}
-          {/* {index === 1 && (
+            {/* Price */}
+            <p className="text-xl font-semibold mt-3">{plan.price}</p>
+            <p className="text-sm">{plan.detail}</p>
+            <button
+              className={`px-4 py-2 rounded-lg font-semibold mt-3 w-full text-center ${
+                index === 1 ? "bg-white text-black" : "bg-black text-white"
+              }`}
+            >
+              UPGRADE NOW{" "}
+            </button>
+            {/* Features */}
+            <ul className="mb-6 space-y-2 mt-6 text-sm text-[#555964] ">
+              {plan.features.map((feature, featureIndex) => (
+                <li
+                  key={featureIndex}
+                  className={`flex items-center gap-2 ${
+                    index === 1 ? "text-white" : "text-black"
+                  }`}
+                >
+                  <img src={plan.icon} className="w-6 h-6" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+
+            {/* Button */}
+
+            {/* Right-aligned Image for the Second Card */}
+            {/* {index === 1 && (
             <div className="mt-6 flex justify-end">
               <img
                 src="https://via.placeholder.com/150"
@@ -131,8 +142,9 @@ export default function SubscriptionPlans() {
               />
             </div>
           )} */}
-        </div>
-      ))}
-    </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

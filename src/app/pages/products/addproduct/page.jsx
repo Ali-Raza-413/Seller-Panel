@@ -17,8 +17,7 @@ const ProductForm = () => {
     image: null,
     brand: "",
     gender: "",
-    link: ""
-
+    link: "",
   });
 
   const [price, setPrice] = useState("$5000");
@@ -30,7 +29,11 @@ const ProductForm = () => {
   const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 
   const handleSizeChange = (size) => {
-    setSelectedSize(size);
+    setSelectedSize((prevSizes) =>
+      prevSizes.includes(size)
+        ? prevSizes.filter((s) => s !== size)
+        : [...prevSizes, size]
+    );
   };
   const colors = [
     "#313B5E",
@@ -54,12 +57,12 @@ const ProductForm = () => {
     });
   };
 
-  const handleColorChange = (e) => {
-    const { value, checked } = e.target;
-    setSelectedColors((prevState) =>
-      checked
-        ? [...prevState, value]
-        : prevState.filter((color) => color !== value)
+  const handleColorChange = (event) => {
+    const color = event.target.value;
+    setSelectedColors((prevColors) =>
+      prevColors.includes(color)
+        ? prevColors.filter((c) => c !== color)
+        : [...prevColors, color]
     );
   };
 
@@ -88,7 +91,7 @@ const ProductForm = () => {
 
   return (
     <>
-      <div className="">
+      <div className="mb-4">
         <div className="flex items-center gap-2 mb-6 ">
           <BackButton />
           <h1 className="text-2xl font-bold ">Add New Product</h1>
@@ -205,7 +208,13 @@ const ProductForm = () => {
                       className="hidden"
                     />
                     <label htmlFor={color} className="cursor-pointer">
-                      <div className="flex justify-center items-center h-10 w-10 bg-blue-100 rounded-lg">
+                      <div
+                        className={`flex justify-center items-center h-10 w-10 rounded-lg ${
+                          selectedColors.includes(color)
+                            ? "bg-blue-300"
+                            : "bg-blue-100"
+                        }`}
+                      >
                         <div
                           className="h-6 w-6 rounded-full"
                           style={{
@@ -219,6 +228,8 @@ const ProductForm = () => {
                 ))}
               </div>
             </div>
+
+            {/* Size Selection */}
             <div className="md:col-span-4">
               <label htmlFor="size" className="block font-semibold mb-1">
                 Size <span className="text-red-500">*</span>
@@ -228,7 +239,7 @@ const ProductForm = () => {
                   <div
                     key={size}
                     className={`cursor-pointer flex justify-center items-center h-10 w-10 border rounded-lg ${
-                      selectedSize === size
+                      selectedSize.includes(size)
                         ? "border-blue-500 bg-blue-100"
                         : "border-gray-300"
                     }`}
@@ -236,7 +247,7 @@ const ProductForm = () => {
                   >
                     <span
                       className={`text-sm font-semibold ${
-                        selectedSize === size
+                        selectedSize.includes(size)
                           ? "text-blue-500"
                           : "text-gray-700"
                       }`}
@@ -282,9 +293,9 @@ const ProductForm = () => {
                 id="default-range"
                 type="range"
                 value={price}
-                min="$1000"
+                min="$800"
                 max="$5000"
-                step="$100"
+                step="$50"
                 onChange={handleRangeChange}
                 className="w-full h-2 bg-black rounded-lg appearance-none cursor-pointer "
               />
@@ -316,11 +327,13 @@ const ProductForm = () => {
                   className="hidden"
                 />
               </div>
-              <div className="flex flex-col justify-center items-center py-10">
+              <div
+                className="flex flex-col justify-center items-center py-10 "
+                onClick={handleIconClick}
+              >
                 <Image
                   src="/b6.png"
                   alt="filesicon"
-                  onClick={handleIconClick}
                   width={40}
                   height={40}
                   className="cursor-pointer"

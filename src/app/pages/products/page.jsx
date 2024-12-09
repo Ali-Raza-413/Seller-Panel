@@ -103,16 +103,19 @@ const ProductManagement = () => {
       createdDate: "2024-11-26",
     },
   ]);
-  
+
+
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
-const [showDetails, setShowDetails] = useState(false);
-const [currentProduct, setCurrentProduct] = useState(null);
-const [modalMode, setModalMode] = useState("view"); 
+  const [sizeFilter, setSizeFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
+  const [showDetails, setShowDetails] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState(null);
+  const [modalMode, setModalMode] = useState("view");
   const router = useRouter();
 
-  const categories = ["All Categories", "Category One", "Category Two"];
+  const categories = ["shirts", "pants", "Suits", "formal"];
 
   const toggleStatus = (product) => {
     const updatedProducts = products.map((item) =>
@@ -120,31 +123,39 @@ const [modalMode, setModalMode] = useState("view");
     );
     setProducts(updatedProducts);
   };
+
   const openDetails = (product, mode = "view") => {
     setCurrentProduct(product);
     setModalMode(mode);
     setShowDetails(true);
   };
-  
+
   const closeDetails = () => {
     setShowDetails(false);
     setCurrentProduct(null);
     setModalMode("view");
   };
-  
+
   const handleDelete = () => {
     // Perform the delete action (e.g., API call)
     console.log("Deleted product:", currentProduct);
     closeDetails();
   };
 
-  const filteredProducts = products.filter(
-    (product) =>
-      product.title.toLowerCase().includes(search.toLowerCase()) &&
-      (category === "All Categories" ||
-        category === "" ||
-        category === product.category)
-  );
+  // Filter products based on search, size, and date
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      product.title.toLowerCase().includes(search.toLowerCase()) ||
+      product.name.toLowerCase().includes(search.toLowerCase());
+    const matchesSize = sizeFilter
+      ? product.size.toLowerCase().includes(sizeFilter.toLowerCase())
+      : true;
+    const matchesDate = dateFilter
+      ? product.createdDate.includes(dateFilter)
+      : true;
+
+    return matchesSearch && matchesSize && matchesDate;
+  });
 
   const toggleTemplate = (rowData) => (
     <div
@@ -163,8 +174,11 @@ const [modalMode, setModalMode] = useState("view");
 
   const actionsTemplate = (rowData) => (
     <div className="flex gap-5">
-      <button >
-        <FiEye className="w-5 h-5 text-black" onClick={() => router.push("/pages/products/viewproduct")}/>
+      <button>
+        <FiEye
+          className="w-5 h-5 text-black"
+          onClick={() => router.push("/pages/products/viewproduct")}
+        />
       </button>
       <button onClick={() => openDetails(rowData, "edit")}>
         <FiEdit2 className="w-5 h-5 text-black" />
@@ -182,36 +196,49 @@ const [modalMode, setModalMode] = useState("view");
           <BackButton />
           <h1 className="text-2xl font-semibold">Product Management</h1>
         </div>
-       
       </div>
       <div className="flex items-center justify-between gap-4">
         <div className="flex gap-2">
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300"
-        >
-          {categories.map((cat, idx) => (
-            <option key={idx} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-[50%] max-w-sm px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300"
-        />
-      </div>
-      <button
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300"
+          >
+            <option value="">All Categories</option>
+            {categories.map((cat, idx) => (
+              <option key={idx} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-[50%] max-w-sm px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300"
+          />
+          <input
+            type="text"
+            placeholder="Size"
+            value={sizeFilter}
+            onChange={(e) => setSizeFilter(e.target.value)}
+            className="w-[50%] max-w-sm px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300"
+          />
+          <input
+            type="date"
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
+            className="w-[50%] max-w-sm px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300"
+          />
+        </div>
+        <button
           className="bg-gray-600 text-white px-6 py-2 rounded-lg"
           onClick={() => router.push("/pages/products/addproduct")}
         >
           Add Product
         </button>
-        </div>
+      </div>
       <div className="bg-white rounded-lg shadow-md overflow-auto">
         <DataTable
           value={filteredProducts}
@@ -220,6 +247,7 @@ const [modalMode, setModalMode] = useState("view");
           dataKey="id"
           paginator
           rows={10}
+          className="custom-paginator"
         >
           <Column
             selectionMode="multiple"
@@ -247,7 +275,7 @@ const [modalMode, setModalMode] = useState("view");
               />
             )}
           ></Column>
-            <Column
+          <Column
             field="name"
             header="Name"
             sortable
@@ -284,102 +312,82 @@ const [modalMode, setModalMode] = useState("view");
       </div>
 
       {showDetails && (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-          {modalMode === "view" && (
-            <>
-              <h2 className="text-xl font-semibold mb-4">Product Details</h2>
-              {currentProduct && (
-                <div>
-                  <img
-                    src={currentProduct.image}
-                    alt={currentProduct.title}
-                    className="w-full h-48 object-cover rounded-md mb-4"
-                  />
-                  <p>
-                    <strong>Title:</strong> {currentProduct.title}
-                  </p>
-                  <p>
-                    <strong>Status:</strong>{" "}
-                    {currentProduct.isActive ? "Active" : "Inactive"}
-                  </p>
-                  <p>
-                    <strong>Created Date:</strong> {currentProduct.createdDate}
-                  </p>
-                </div>
-              )}
-              <button
-                className="mt-4 bg-gray-600 text-white px-4 py-2 rounded-md"
-                onClick={closeDetails}
-              >
-                Close
-              </button>
-            </>
-          )}
-          {modalMode === "edit" && (
-            <>
-              <h2 className="text-xl font-semibold mb-4">Edit Product</h2>
-              {currentProduct && (
-                <div>
-                  <label className="block mb-2">
-                    <strong>Title:</strong>
-                    <input
-                      type="text"
-                      defaultValue={currentProduct.title}
-                      className="w-full px-3 py-2 border rounded-md"
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            {modalMode === "view" && (
+              <>
+                <h2 className="text-xl font-semibold mb-4">Product Details</h2>
+                {currentProduct && (
+                  <div>
+                    <img
+                      src={currentProduct.image}
+                      alt={currentProduct.title}
+                      className="w-40 h-40 object-cover rounded-md mb-4"
                     />
-                  </label>
-                  <label className="block mb-2">
-                    <strong>Status:</strong>
-                    <select
-                      defaultValue={currentProduct.isActive ? "Active" : "Inactive"}
-                      className="w-full px-3 py-2 border rounded-md"
-                    >
-                      <option value="Active">Active</option>
-                      <option value="Inactive">Inactive</option>
-                    </select>
-                  </label>
+                    <p><strong>Name:</strong> {currentProduct.name}</p>
+                    <p><strong>Size:</strong> {currentProduct.size}</p>
+                    <p><strong>Date Created:</strong> {currentProduct.createdDate}</p>
+                  </div>
+                )}
+                <div className="flex justify-end gap-4 mt-4">
+                  <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                    onClick={() => openDetails(currentProduct, "edit")}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                    onClick={() => openDetails(currentProduct, "delete")}
+                  >
+                    Delete
+                  </button>
                 </div>
-              )}
-              <div className="flex justify-between mt-4">
-                <button
-                  className="bg-gray-600 text-white px-4 py-2 rounded-md"
-                  onClick={closeDetails}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md"
-                  onClick={() => console.log("Edit saved:", currentProduct)}
-                >
-                  Save Changes
-                </button>
+              </>
+            )}
+            {modalMode === "edit" && (
+              <div>
+                <h2 className="text-xl font-semibold mb-4">Edit Product</h2>
+                {/* Add your edit form here */}
+                <div className="flex justify-end gap-4 mt-4">
+                  <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                    onClick={closeDetails}
+                  >
+                    Save Changes
+                  </button>
+                  <button
+                    className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+                    onClick={closeDetails}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-            </>
-          )}
-          {modalMode === "delete" && (
-            <>
-              <h2 className="text-xl font-semibold mb-4">Confirm Deletion</h2>
-              <p>Are you sure you want to delete &quot;{currentProduct?.title}&quot;?</p>
-              <div className="flex justify-between mt-4">
-                <button
-                  className="bg-gray-600 text-white px-4 py-2 rounded-md"
-                  onClick={closeDetails}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="bg-red-600 text-white px-4 py-2 rounded-md"
-                  onClick={handleDelete}
-                >
-                  Delete
-                </button>
+            )}
+            {modalMode === "delete" && (
+              <div>
+                <h2 className="text-xl font-semibold mb-4">Delete Product</h2>
+                <p>Are you sure you want to delete this product?</p>
+                <div className="flex justify-end gap-4 mt-4">
+                  <button
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+                    onClick={closeDetails}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-            </>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-    )}
+      )}
     </div>
   );
 };
