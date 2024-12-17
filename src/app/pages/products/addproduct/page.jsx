@@ -23,28 +23,9 @@ const ProductForm = () => {
   const [price, setPrice] = useState("$5000");
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
-  const [selectedColors, setSelectedColors] = useState([]);
-  const [selectedSize, setSelectedSize] = useState("");
 
   const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 
-  const handleSizeChange = (size) => {
-    setSelectedSize((prevSizes) =>
-      prevSizes.includes(size)
-        ? prevSizes.filter((s) => s !== size)
-        : [...prevSizes, size]
-    );
-  };
-  const colors = [
-    "#313B5E",
-    "#F9B931",
-    "#FFFFFF",
-    "#FF6C2F",
-    "#22C55E",
-    "#EF5F5F",
-    "#4ECAC2",
-    "#5D7186",
-  ];
   // Handle the change in the range slider
   const handleRangeChange = (event) => {
     setPrice(event.target.value);
@@ -55,15 +36,6 @@ const ProductForm = () => {
       ...formData,
       [name]: value,
     });
-  };
-
-  const handleColorChange = (event) => {
-    const color = event.target.value;
-    setSelectedColors((prevColors) =>
-      prevColors.includes(color)
-        ? prevColors.filter((c) => c !== color)
-        : [...prevColors, color]
-    );
   };
 
   const handleFileSelected = (event) => {
@@ -189,75 +161,7 @@ const ProductForm = () => {
                 placeholder="Enter product name"
               />
             </div>
-            <div className="md:col-span-5">
-              <h1 className="text-md font-bold">
-                Colors <span className="text-red-500">*</span>
-              </h1>
-              <div className="flex flex-wrap gap-2">
-                {colors.map((color) => (
-                  <div
-                    key={color}
-                    className="flex flex-col items-center space-x-2"
-                  >
-                    <input
-                      type="checkbox"
-                      id={color}
-                      value={color}
-                      checked={selectedColors.includes(color)}
-                      onChange={handleColorChange}
-                      className="hidden"
-                    />
-                    <label htmlFor={color} className="cursor-pointer">
-                      <div
-                        className={`flex justify-center items-center h-10 w-10 rounded-lg ${
-                          selectedColors.includes(color)
-                            ? "bg-blue-300"
-                            : "bg-blue-100"
-                        }`}
-                      >
-                        <div
-                          className="h-6 w-6 rounded-full"
-                          style={{
-                            backgroundColor: color,
-                            backdropFilter: "blur(4px)",
-                          }}
-                        ></div>
-                      </div>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Size Selection */}
-            <div className="md:col-span-4">
-              <label htmlFor="size" className="block font-semibold mb-1">
-                Size <span className="text-red-500">*</span>
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {sizes.map((size) => (
-                  <div
-                    key={size}
-                    className={`cursor-pointer flex justify-center items-center h-10 w-10 border rounded-lg ${
-                      selectedSize.includes(size)
-                        ? "border-blue-500 bg-blue-100"
-                        : "border-gray-300"
-                    }`}
-                    onClick={() => handleSizeChange(size)}
-                  >
-                    <span
-                      className={`text-sm font-semibold ${
-                        selectedSize.includes(size)
-                          ? "text-blue-500"
-                          : "text-gray-700"
-                      }`}
-                    >
-                      {size.charAt(0).toUpperCase() + size.slice(1)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
             {/* Description */}
             <div className="md:col-span-8">
               <label htmlFor="description" className="block font-semibold mb-1">
@@ -386,12 +290,6 @@ const ProductForm = () => {
           </p>
           <p>
             <strong>Category:</strong> {formData.category}
-          </p>
-          <p>
-            <strong>Size:</strong> {formData.size}
-          </p>
-          <p>
-            <strong>Shoe Colors:</strong> {formData.colors.join(", ")}
           </p>
           <p>
             <strong>Description:</strong> {formData.description}

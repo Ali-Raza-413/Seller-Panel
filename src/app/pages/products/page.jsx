@@ -283,13 +283,6 @@ const ProductManagement = () => {
             headerStyle={getHeaderStyle()}
           ></Column>
           <Column
-            field="size"
-            header="Size"
-            sortable
-            bodyStyle={getBodyStyle()}
-            headerStyle={getHeaderStyle()}
-          ></Column>
-          <Column
             field="createdDate"
             header="Date Created"
             sortable

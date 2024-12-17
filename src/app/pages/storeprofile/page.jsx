@@ -38,7 +38,7 @@ const StoreProfile = () => {
 
   return (
     <>
-   <div className="">
+      <div className="">
         <div className="flex items-center gap-2 mb-6 ">
           <BackButton />
           <h1 className="text-2xl font-bold ">Store profile</h1>
