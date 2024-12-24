@@ -48,7 +48,8 @@ function Login() {
               >
                 Login
               </button>
-              
+
+              <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
@@ -58,17 +59,25 @@ function Login() {
                   />
                   <label className="text-sm text-gray-700">Remember me</label>
                 </div>
-                </div>
+                <Link
+                  href={"/auth/resetpassword"}
+                  className="text-sm text-gray-600 hover:text-gray-900"
+                >
+                  Reset Password
+                </Link>
+              </div>
 
-             
+              <div className="text-center text-sm text-gray-600">
+                Don't have an account?{" "}
+                <Link
+                  href={"/auth/register"}
+                  className="text-black hover:underline font-medium"
+                >
+                  Register here
+                </Link>
+              </div>
+            </div>
           </form>
-          <button
-                type="submit"
-                className="w-full bg-[#F4F4F5] text-black text-[17px] font-normal px-6 py-3 rounded-md font-inter"
-                onClick={() => router.push("/auth/signin")}
-              >
-                Continue with phone
-              </button>
         </div>
       </div>
 

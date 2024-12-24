@@ -95,23 +95,6 @@ const ViewProductDetail = () => {
           {isDescriptionExpanded ? 'Read Less' : 'Read More'}
         </button>
       </div>
-
-      <div>
-        <h1 className='text-lg font-bold'>Sizes</h1>
-        <p>Available sizes: S, M, L, XL</p>
-      </div>
-
-      {/* Colors Section */}
-      <div>
-        <h1 className='text-lg font-bold'>Colors</h1>
-        <div className="flex space-x-4">
-          <div className="w-6 h-6 bg-black rounded-full"></div>
-          <div className="w-6 h-6 bg-white border-2 border-gray-400 rounded-full"></div>
-          <div className="w-6 h-6 bg-blue-500 rounded-full"></div>
-          <div className="w-6 h-6 bg-red-500 rounded-full"></div>
-        </div>
-      </div>
-
       {/* Edit and Delete Buttons */}
       <div className="mt-5 flex gap-4">
         <button className="bg-black text-white px-6 py-3 rounded-md">

@@ -14,42 +14,47 @@ const HelpandSupport = () => {
   const [data, setData] = useState([
     {
       id: 1,
-      subject: "Login Issue",
-      email: "user1@example.com",
-      description: "Unable to login to account",
-      attachment: "file1.pdf",
+      subject: "Product Upload Issue",
+      email: "seller1@example.com",
+      name: "John's Electronics",
+      description: "Unable to upload new product images",
+      attachment: "error_screenshot.pdf",
       status: "Pending",
     },
     {
       id: 2,
-      subject: "Payment Failed",
-      email: "user2@example.com",
-      description: "Payment not processed",
-      attachment: "file2.pdf",
+      subject: "Payment Not Received",
+      email: "seller2@example.com",
+      name: "Fashion Hub",
+      description: "Order #1234 payment not credited",
+      attachment: "payment_proof.pdf",
       status: "Resolved",
     },
     {
       id: 3,
-      subject: "Account Hacked",
-      email: "user3@example.com",
-      description: "Suspicious activity detected",
-      attachment: "file3.pdf",
+      subject: "Account Access Problem",
+      email: "seller3@example.com",
+      name: "Home Decor Store",
+      description: "Cannot access seller dashboard",
+      attachment: "access_error.pdf",
       status: "Pending",
     },
     {
       id: 4,
-      subject: "Error 404 on Help Page",
-      email: "user4@example.com",
-      description: "Help page not found",
-      attachment: "file4.pdf",
+      subject: "Order Fulfillment Issue",
+      email: "seller4@example.com",
+      name: "Beauty Box",
+      description: "Unable to mark order as shipped",
+      attachment: "order_details.pdf",
       status: "Resolved",
     },
     {
       id: 5,
-      subject: "Cannot Reset Password",
-      email: "user5@example.com",
-      description: "Password reset link not working",
-      attachment: "file5.pdf",
+      subject: "Commission Dispute",
+      email: "seller5@example.com",
+      name: "Tech Gadgets",
+      description: "Incorrect commission calculation",
+      attachment: "commission_statement.pdf",
       status: "Pending",
     },
   ]);
@@ -82,13 +87,6 @@ const HelpandSupport = () => {
     </button>
   );
 
-  const chatBodyTemplate = () => (
-    <div className="flex gap-2">
-      <img src="/wh.png" className="w-10 h-10" alt="whatsapp" />
-      <img src="/gmail.png" className="w-10 h-10" alt="gmail" />
-    </div>
-  );
-
   const actionBodyTemplate = (rowData) => (
     <button
       className="text-red-500 hover:text-red-700"
@@ -97,19 +95,6 @@ const HelpandSupport = () => {
     >
       <FaTrash />
     </button>
-  );
-
-  const onSelectAll = (e) => {
-    setSelectedRows(e.checked ? [...data] : []);
-  };
-
-  const customCheckbox = (options) => (
-    <input
-      type="checkbox"
-      className="w-5 h-5 bg-black border-none rounded-sm text-white focus:ring-0 focus:ring-offset-0"
-      checked={options.checked}
-      onChange={(e) => options.onChange(e.checked)}
-    />
   );
 
   return (
@@ -147,53 +132,52 @@ const HelpandSupport = () => {
           header="ID"
           bodyStyle={getBodyStyle()}
           headerStyle={getHeaderStyle()}
-        ></Column>
+        />
         <Column
           field="subject"
           header="Subject"
           bodyStyle={getBodyStyle()}
           headerStyle={getHeaderStyle()}
-        ></Column>
+        />
         <Column
           field="email"
           header="Email"
           bodyStyle={getBodyStyle()}
           headerStyle={getHeaderStyle()}
-        ></Column>
+        />
+        <Column
+          field="name"
+          header="Name"
+          bodyStyle={getBodyStyle()}
+          headerStyle={getHeaderStyle()}
+        />
         <Column
           field="description"
           header="Description"
           bodyStyle={getBodyStyle()}
           headerStyle={getHeaderStyle()}
-        ></Column>
+        />
         <Column
           field="attachment"
           header="Attachment"
           body={attachmentBodyTemplate}
           bodyStyle={getBodyStyle()}
           headerStyle={getHeaderStyle()}
-        ></Column>
-        <Column
-          field="chat"
-          header="Chat"
-          body={chatBodyTemplate}
-          bodyStyle={getBodyStyle()}
-          headerStyle={getHeaderStyle()}
-        ></Column>
+        />
         <Column
           field="status"
           header="Status"
           body={statusBodyTemplate}
           bodyStyle={getBodyStyle()}
           headerStyle={getHeaderStyle()}
-        ></Column>
+        />
         <Column
           field="action"
           header="Action"
           body={actionBodyTemplate}
           bodyStyle={getBodyStyle()}
           headerStyle={getHeaderStyle()}
-        ></Column>
+        />
       </DataTable>
     </div>
   );

@@ -1,11 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
 
-function SignIn() {
-  const [phone, setPhone] = useState("");
+function Login() {
+  const [email, setEmail] = useState("");
   const router = useRouter();
 
   const handleClick = (e) => {
@@ -18,14 +16,18 @@ function SignIn() {
       {/* Left Section (Form) */}
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="space-y-8 bg-white p-8 rounded-xl shadow-lg w-[60%]">
-          <h1 className="text-lg text-center font-bold">Sign In</h1>
+          <h1 className="text-lg text-center font-bold">Reset Password</h1>
+
           <form onSubmit={handleClick}>
-            <div className="flex flex-col space-y-20">
-              <PhoneInput
-                defaultCountry="SA"
-                value={phone}
-                onChange={setPhone}
-                className="custom-phone-input"
+            <div className="flex flex-col space-y-4">
+              {/* Email Input */}
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                required
               />
 
               <button
@@ -38,6 +40,7 @@ function SignIn() {
           </form>
         </div>
       </div>
+
       {/* Right Section (Image) */}
       <div className="flex-1 relative flex justify-end h-screen">
         <div className="absolute left-20 maxw-[100%] h-full lg:max-h-full mx-auto inset-0 overflow-hidden">
@@ -53,4 +56,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default Login;

@@ -218,13 +218,13 @@ const ProductManagement = () => {
             onChange={(e) => setSearch(e.target.value)}
             className="w-[50%]  max-w-sm px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300"
           />
-          <input
+          {/* <input
             type="text"
             placeholder="Size"
             value={sizeFilter}
             onChange={(e) => setSizeFilter(e.target.value)}
             className="w-[50%] max-w-sm px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300"
-          />
+          /> */}
           <input
             type="date"
             value={dateFilter}

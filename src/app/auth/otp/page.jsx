@@ -43,7 +43,7 @@ function OtpVerification() {
   const handleClick = (e) => {
     e.preventDefault();
     console.log("Entered OTP:", otp.join(""));
-    router.push("/pages/dashboard");
+    router.push("/");
   };
 
   return (
